@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { Component, createContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import {
   CATEGORIES_URL,
   CONFiG,
@@ -10,49 +10,48 @@ import {
 
 export const FileContext = createContext({});
 
-export class FileProvider extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { files: [], categories: [], extentions: [] };
-  }
+export function FileProvider(props) {
+  const [files, setFiles] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [extentions, setExtentions] = useState([]);
 
-  componentDidMount = () => {
-    this.getAllFiles();
-  };
+  useEffect(() => {
+    const getAllFiles = async () => {
+      try {
+        await axios.get(FILES_URL, CONFiG).then((response) => {
+          setFiles(response.data);
+        });
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
 
-  getAllFiles = async () => {
-    try {
-      await axios.get(FILES_URL, CONFiG).then((response) => {
-        this.setState({ files: response.data });
-      });
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
+    getAllFiles();
+  }, []);
 
-  getAllCategories = async () => {
+  const getAllCategories = async () => {
     try {
       await axios.get(CATEGORIES_URL).then((response) => {
-        this.setState({ categories: response.data });
+        setCategories(response.data);
       });
     } catch (e) {
       console.log(e.message);
     }
   };
 
-  getAllExtentions = async (categoryID) => {
+  const getAllExtentions = async (categoryID) => {
     try {
       await axios
         .post(EXTENTIONS_URL, { category: categoryID })
         .then((response) => {
-          this.setState({ extentions: response.data });
+          setExtentions(response.data);
         });
     } catch (e) {
       console.log(e.message);
     }
   };
 
-  uploadFile = async (event) => {
+  const uploadFile = async (event) => {
     try {
       const file = event.target.file.files[0];
       const category = event.target.category.value;
@@ -61,31 +60,25 @@ export class FileProvider extends Component {
       formFile.append("file", file);
       formFile.append("category", category);
       formFile.append("extention", extention);
-      await axios.post(UPLOAD_FILE_URL, formFile, CONFiG).then((response) => {
-        this.setState({ file: response.data });
-      });
+      await axios.post(UPLOAD_FILE_URL, formFile, CONFiG);
       return "file uploaded";
     } catch (e) {
       return e.response.data;
     }
   };
 
-  render() {
-    const { files, categories, extentions } = this.state;
-    const { uploadFile, getAllCategories, getAllExtentions } = this;
-    return (
-      <FileContext.Provider
-        value={{
-          files,
-          categories,
-          extentions,
-          uploadFile,
-          getAllCategories,
-          getAllExtentions,
-        }}
-      >
-        {this.props.children}
-      </FileContext.Provider>
-    );
-  }
+  return (
+    <FileContext.Provider
+      value={{
+        files,
+        categories,
+        extentions,
+        uploadFile,
+        getAllCategories,
+        getAllExtentions,
+      }}
+    >
+      {props.children}
+    </FileContext.Provider>
+  );
 }
