@@ -1,0 +1,3 @@
+change password modal => Munkh-Ochir
+followers, following unique => Unubold
+follow, unfollow => Ulziima

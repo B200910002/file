@@ -1,0 +1,1 @@
+start "" cmd /b /c code "C:\Users\Ocean\coremind-projects\file"
