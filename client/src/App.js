@@ -1,5 +1,11 @@
 import React, { useContext } from "react";
-import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
 
 import { AuthContext, AuthProvider } from "./context/AuthContext";
 
@@ -44,14 +50,14 @@ const Layout = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   return (
     <>
-      {user && isAuthenticated ? (
+      {user ? (
         <>
           <Header />
           <Outlet />
           <Footer />
         </>
       ) : (
-        <Navigate to="/auth/login"/>
+        <Navigate to="/auth/login" />
       )}
     </>
   );
