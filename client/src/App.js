@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import { AuthContext, AuthProvider } from "./context/AuthContext";
 
@@ -51,7 +51,7 @@ const Layout = () => {
           <Footer />
         </>
       ) : (
-        <></>
+        <Navigate to="/auth/login"/>
       )}
     </>
   );

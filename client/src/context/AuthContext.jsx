@@ -12,13 +12,14 @@ export const AuthContext = createContext({});
 export class AuthProvider extends Component {
   constructor(props) {
     super(props);
-    this.state = { isAuthenticated: false, user: {} };
+    this.state = { isAuthenticated: false, isLoading: true, user: {} };
   }
 
   componentDidMount = async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     this.setState({ user: user });
     await this.isAuthenticated();
+    this.setState({isLoading: false})
   };
 
   isAuthenticated = async () => {
@@ -72,12 +73,16 @@ export class AuthProvider extends Component {
   };
 
   render() {
-    const { isAuthenticated, user } = this.state;
+    const { isAuthenticated, isLoading, user } = this.state;
     const { login, logout, register } = this;
-    return (
-      <AuthContext.Provider value={{ isAuthenticated, user, login, logout, register }}>
-        {this.props.children}
-      </AuthContext.Provider>
-    );
+    if (isLoading) return <div>Loading...</div>;
+    else
+      return (
+        <AuthContext.Provider
+          value={{ isAuthenticated, user, login, logout, register }}
+        >
+          {this.props.children}
+        </AuthContext.Provider>
+      );
   }
 }
