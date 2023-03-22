@@ -18,7 +18,7 @@ export function FileProvider(props) {
   useEffect(() => {
     async function getAllFiles(){
       try {
-        await axios.get(FILES_URL, CONFiG).then((response) => {
+        axios.get(FILES_URL, CONFiG).then((response) => {
           setFiles(response.data);
         });
       } catch (e) {

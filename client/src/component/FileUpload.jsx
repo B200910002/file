@@ -3,7 +3,7 @@ import { FileContext } from "../context/FileContext";
 import { SuccessAlert, DangerAlert } from "../util/Alert";
 
 export default function FileUpload() {
-  const [category, setCategory] = useState("");
+  // const [category, setCategory] = useState("");
   const [extention, setExtention] = useState("");
   const [response, setResponse] = useState("");
   const {
@@ -34,11 +34,11 @@ export default function FileUpload() {
           onClick={() => getAllCategories()}
           onChange={(event) => {
             getAllExtentions(event.target.value);
-            setCategory(
-              categories.find(function (element) {
-                return element._id === event.target.value;
-              })
-            );
+            // setCategory(
+            //   categories.find(function (element) {
+            //     return element._id === event.target.value;
+            //   })
+            // );
           }}
           required
         >
