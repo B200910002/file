@@ -15,19 +15,20 @@ export function AuthProvider(props) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setUser(user);
-    const isAuthenticate = async () => {
+    async function fetch() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      setUser(user);
       try {
         await axios.get(IS_AUTHENCATED_URL, CONFiG).then((response) => {
-          setIsAuthenticated(true);
+          setIsAuthenticated(response.data.isAuthenticated);
         });
       } catch (e) {
         console.log(e.response.data.error);
       }
-    };
-    isAuthenticate();
-    setIsLoading(false);
+      setIsLoading(false);
+    }
+
+    fetch();
   }, []);
 
   const login = async (email, password) => {

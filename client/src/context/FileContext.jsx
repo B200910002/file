@@ -16,7 +16,7 @@ export function FileProvider(props) {
   const [extentions, setExtentions] = useState([]);
 
   useEffect(() => {
-    const getAllFiles = async () => {
+    async function getAllFiles(){
       try {
         await axios.get(FILES_URL, CONFiG).then((response) => {
           setFiles(response.data);

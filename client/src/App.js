@@ -50,7 +50,7 @@ const Layout = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   return (
     <>
-      {user ? (
+      {user && isAuthenticated? (
         <>
           <Header />
           <Outlet />

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 export default function Header() {
@@ -8,22 +8,22 @@ export default function Header() {
     <header className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-6">
         <nav className="flex justify-between items-center">
-          <a href="/file/upload" className="text-lg font-bold text-gray-800">
+          <Link to="/file/upload" className="text-lg font-bold text-gray-800">
             File upload
-          </a>
+          </Link>
           <ul className="flex">
             <li>
-              <a
-                href="/file"
+              <Link
+                to="/file"
                 className="px-4 py-2 text-gray-700 hover:bg-gray-100"
               >
                 Files
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/" className="px-4 py-2 text-gray-700 hover:bg-gray-100">
+              <Link to="/" className="px-4 py-2 text-gray-700 hover:bg-gray-100">
                 {user.email}
-              </a>
+              </Link>
             </li>
             <li>
               <a
