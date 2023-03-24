@@ -37,22 +37,3 @@ CREATE TABLE IF NOT EXISTS public.users
     CONSTRAINT user_pkey PRIMARY KEY (id),
 	foreign key (profile_id) references files(id)
 );
-
-INSERT INTO public.categories(
-	id, name, description)
-	VALUES (default, 'test migration', 'test migration'),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', ''),
-            (default, '', '');
