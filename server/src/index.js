@@ -3,10 +3,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
-const connectDB = require("./database/connection");
+const mongodb = require("./database/mongodb");
+const postgresql = require("./database/postgresql");
 
-//data base connection
-connectDB();
+//database connections
+mongodb.connect();
+postgresql.connect();
 
 //api
 const API = require("./api/Api");

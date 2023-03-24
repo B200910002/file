@@ -19,6 +19,25 @@ const fileSchema = new Schema({
   uploader: Schema.Types.ObjectId,
 });
 
+categorySchema.statics.import = async function (categories) {
+  for (let category of categories) {
+    await this.create({
+      name: category.name,
+      description: category.description,
+    });
+  }
+};
+
+extentionSchema.statics.import = async function (extentions) {
+  for (let extention of extentions) {
+    await this.create({
+      name: extention.name,
+      description: extention.description,
+      category: extention.category,
+    });
+  }
+};
+
 module.exports.Category = mongoose.model("Category", categorySchema);
 module.exports.Extention = mongoose.model("Extention", extentionSchema);
 module.exports.File = mongoose.model("File", fileSchema);

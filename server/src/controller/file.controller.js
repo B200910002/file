@@ -1,5 +1,13 @@
 const { File, Category, Extention } = require("../model/File.model");
 const { User } = require("../model/User.model");
+const { db } = require("../database/postgresql");
+
+// console.log(
+//   db.query("select * from categories", (error, result) => {
+//     if (error) console.log(error.message);
+//     else console.log(result.rows);
+//   })
+// );
 
 exports.createFile = async (req, res, next) => {
   try {
@@ -77,8 +85,8 @@ exports.getAllExtentions = async (req, res, next) => {
 
 exports.getAllFiles = async (req, res, next) => {
   try {
-    const user = req.user
-    const files = await File.find({uploader: user._id});
+    const user = req.user;
+    const files = await File.find({ uploader: user._id });
     res.status(200).json(files);
   } catch (e) {
     res.status(400).json({ error: e.message });
@@ -88,15 +96,7 @@ exports.getAllFiles = async (req, res, next) => {
 exports.importFiles = async (req, res, next) => {
   try {
     const { files } = req.body;
-    for (let file of files) {
-      const category = await Category.create({});
-      const extention = await Extention.create({});
-      await File.create({
-        name: file.name,
-        category: category._id,
-        extention: extention._id,
-      });
-    }
+    await File.importFile();
     res.status(200).json("files imported");
   } catch (e) {
     res.status(400).json({ error: e.message });
@@ -106,12 +106,7 @@ exports.importFiles = async (req, res, next) => {
 exports.importCategories = async (req, res, next) => {
   try {
     const { categories } = req.body;
-    for (let category of categories) {
-      await Category.create({
-        name: category.name,
-        description: category.description,
-      });
-    }
+    await Category.import(categories);
     res.status(200).json("categories imported");
   } catch (e) {
     res.status(400).json({ error: e.message });
@@ -121,13 +116,7 @@ exports.importCategories = async (req, res, next) => {
 exports.importExtentions = async (req, res, next) => {
   try {
     const { extentions } = req.body;
-    for (let extention of extentions) {
-      await Extention.create({
-        name: extention.name,
-        description: extention.description,
-        category: extention.category,
-      });
-    }
+    await Extention.import(extentions);
     res.status(200).json("extentions imported");
   } catch (e) {
     res.status(400).json({ error: e.message });
