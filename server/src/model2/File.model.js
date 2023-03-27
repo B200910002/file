@@ -63,11 +63,10 @@ class Extention {
 
 class File {
   static async create({ name, extention_id, owner_id }) {
-    return db.query("insert into files (name, extention_id, owner_id) values ($1,$2,$3)", [
-      name,
-      extention_id,
-      owner_id,
-    ]);
+    return db.query(
+      "insert into files (name, extention_id, owner_id) values ($1,$2,$3)",
+      [name, extention_id, owner_id]
+    );
   }
 
   static async find({ owner_id }) {
