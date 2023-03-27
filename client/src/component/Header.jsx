@@ -7,8 +7,8 @@ export default function Header() {
     <header className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-6">
         <nav className="flex justify-between items-center">
-          <a href="/file/upload" className="text-lg font-bold text-gray-800">
-            File upload
+          <a href="/" className="text-lg font-bold text-gray-800">
+            Home
           </a>
           <ul className="flex">
             <li>

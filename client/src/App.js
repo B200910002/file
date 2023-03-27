@@ -36,10 +36,11 @@ function App() {
             <Route index element={<Home />}></Route>
             <Route path="file" element={<File />}>
               <Route index element={<Files />} />
-              <Route path="upload" element={<FileUpload />} />
+              {/* <Route path="upload" element={<FileUpload />} /> */}
             </Route>
             <Route path="/profile">
               <Route index element={<Profile />} />
+              {/* <Route path="upload" element={<FileUpload />}/> */}
             </Route>
           </Route>
           {/* <Route path="/user/:id/verify/:token" element={<EmailVerify />}></Route> */}

@@ -54,6 +54,7 @@ function ChangePassword({ setOpenModal }) {
                   value={oldPassword}
                   onChange={(event) => setOldpassword(event.target.value)}
                   required
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
                 <br />
                 <label>New password</label>
@@ -64,6 +65,7 @@ function ChangePassword({ setOpenModal }) {
                   value={newPassword}
                   onChange={(event) => setNewPassword(event.target.value)}
                   required
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
                 <br />
                 <label>Repeat new password</label>
@@ -74,6 +76,7 @@ function ChangePassword({ setOpenModal }) {
                   value={repeatNewPassword}
                   onChange={(event) => setRepeatNewPassword(event.target.value)}
                   required
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
                 <br />
                 <div>
