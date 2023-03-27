@@ -16,6 +16,7 @@ import Register from "./auth/Register";
 import NoPage from "./page/NoPage";
 import Home from "./page/Home";
 import File from "./page/File";
+import Profile from "./page/Profile";
 
 import Header from "./component/Header";
 import Footer from "./component/Footer";
@@ -37,6 +38,9 @@ function App() {
               <Route index element={<Files />} />
               <Route path="upload" element={<FileUpload />} />
             </Route>
+            <Route path="/profile">
+              <Route index element={<Profile />} />
+            </Route>
           </Route>
           {/* <Route path="/user/:id/verify/:token" element={<EmailVerify />}></Route> */}
           <Route path="*" element={<NoPage />} />
@@ -50,10 +54,12 @@ const Layout = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   return (
     <>
-      {user && isAuthenticated? (
+      {user && isAuthenticated ? (
         <>
           <Header />
-          <Outlet />
+          <div className="min-h-screen">
+            <Outlet />
+          </div>
           <Footer />
         </>
       ) : (

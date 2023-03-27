@@ -7,6 +7,11 @@ const validator = require("validator");
 class User {
   constructor() {}
 
+  static async find() {
+    const result = await db.query("select * from users");
+    return result.rows;
+  }
+
   static async login(email, password) {
     const user = await db.query("select * from users where email = $1", [
       email,
@@ -59,6 +64,43 @@ class User {
       verified._id,
     ]);
     return user.rows[0];
+  }
+
+  static async changePassword(
+    user,
+    oldPassword,
+    newPassword,
+    repeatNewPassword
+  ) {
+    if (!oldPassword || !newPassword || !repeatNewPassword) {
+      throw new Error("All fields must be filled");
+    }
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordValid) {
+      throw new Error("Old password is not valid");
+    }
+    if (newPassword !== repeatNewPassword) {
+      throw new Error("Password not matched");
+    }
+    if (!validator.isStrongPassword(newPassword)) {
+      throw Error("Password not strong enough");
+    }
+    if (user && isPasswordValid) {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await db.query("update users set password = $2 where _id = $1", [
+        user._id,
+        hashedPassword,
+      ]);
+    }
+    return "Password changed";
+  }
+
+  static async edit({ _id, name }) {
+    const result = await db.query("update users set name = $2 where _id = $1", [
+      _id,
+      name,
+    ]);
+    return result.rows;
   }
 }
 
