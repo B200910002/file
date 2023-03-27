@@ -1,13 +1,6 @@
-const { File, Category, Extention } = require("../model/File.model");
+// const { File, Category, Extention } = require("../model/File.model");
+const { Category, Extention, File } = require("../model2/File.model");
 const { User } = require("../model/User.model");
-const { db } = require("../database/postgresql");
-
-// console.log(
-//   db.query("select * from categories", (error, result) => {
-//     if (error) console.log(error.message);
-//     else console.log(result.rows);
-//   })
-// );
 
 exports.createFile = async (req, res, next) => {
   try {
@@ -16,9 +9,8 @@ exports.createFile = async (req, res, next) => {
     const user = req.user;
     const file1 = await File.create({
       name: file.name,
-      category: category,
-      extention: extention,
-      uploader: user._id,
+      extention_id: extention,
+      owner_id: user._id,
     });
   } catch (e) {
     res.status(400).json({ error: e.message });
@@ -67,7 +59,7 @@ exports.uploadFile = async (req, res, next) => {
 exports.getAllCategories = async (req, res, next) => {
   try {
     const categories = await Category.find();
-    res.status(200).json(categories);
+    res.status(200).json(categories.rows);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
@@ -76,8 +68,8 @@ exports.getAllCategories = async (req, res, next) => {
 exports.getAllExtentions = async (req, res, next) => {
   try {
     const { category } = req.body;
-    const extentions = await Extention.find({ category: category });
-    res.status(200).json(extentions);
+    const extentions = await Extention.findByCate({ category_id: category });
+    res.status(200).json(extentions.rows);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
@@ -86,18 +78,8 @@ exports.getAllExtentions = async (req, res, next) => {
 exports.getAllFiles = async (req, res, next) => {
   try {
     const user = req.user;
-    const files = await File.find({ uploader: user._id });
-    res.status(200).json(files);
-  } catch (e) {
-    res.status(400).json({ error: e.message });
-  }
-};
-
-exports.importFiles = async (req, res, next) => {
-  try {
-    const { files } = req.body;
-    await File.importFile();
-    res.status(200).json("files imported");
+    const files = await File.find({ owner_id: user._id });
+    res.status(200).json(files.rows);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }

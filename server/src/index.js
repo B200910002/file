@@ -14,8 +14,8 @@ postgresql.connect();
 const API = require("./api/Api");
 
 //routes
-const fileRoute = require("./router/file.router");
 const userRoute = require("./router/user.router");
+const fileRoute = require("./router/file.router");
 
 //uses
 app.use(fileUpload());

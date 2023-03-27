@@ -13,7 +13,6 @@ export default function FileUpload() {
     getAllExtentions,
     uploadFile,
   } = useContext(FileContext);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await uploadFile(event);
@@ -36,7 +35,7 @@ export default function FileUpload() {
             getAllExtentions(event.target.value);
             // setCategory(
             //   categories.find(function (element) {
-            //     return element._id === event.target.value;
+            //     return element._id+"" === event.target.value+"";
             //   })
             // );
           }}
@@ -64,7 +63,7 @@ export default function FileUpload() {
           onChange={(event) => {
             setExtention(
               extentions.find(function (element) {
-                return element._id === event.target.value;
+                return element._id + "" === event.target.value + "";
               })
             );
           }}
