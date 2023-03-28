@@ -60,7 +60,7 @@ exports.changePassword = async (req, res, next) => {
 
 exports.getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.findAll();
     res.status(200).json(users);
   } catch (e) {
     res.status(400).json({ error: e.message });
