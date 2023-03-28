@@ -1,78 +1,74 @@
-const { db } = require("../database/postgresql");
+const { sequelize } = require("../database/postgresql");
+const { DataTypes } = require("sequelize");
 
-class Category {
-  static async create({ name, description }) {
-    return db.query(
-      "insert into categories (name, description) values ($1, $2)",
-      [name, description]
-    );
-  }
+const Category = sequelize.define("categories", {
+  _id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true,
+  },
+  name: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.TEXT, allowNull: false },
+});
 
-  static async import(categories) {
-    for (let category of categories) {
-      await this.create({
-        name: category.name,
-        description: category.description,
-      });
-    }
-  }
+const Extention = sequelize.define("extentions", {
+  _id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true,
+  },
+  name: { type: DataTypes.STRING, allowNull: false },
+  description: { type: DataTypes.STRING, allowNull: false },
+  category_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: "categories",
+      key: "_id",
+    },
+  },
+});
 
-  static async find() {
-    return db.query("select * from categories");
-  }
+const File = sequelize.define("files", {
+  _id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true,
+  },
+  name: { type: DataTypes.STRING, allowNull: false },
+  extention_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: "extentions", key: "_id" },
+  },
+  owner_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: "users", key: "_id" },
+  },
+});
 
-  static async findById(id) {
-    const result = await db.query("select * from categories where _id = $1", [
-      id,
-    ]);
-    return result.rows[0];
+Category.import = async function (categories) {
+  for (let category of categories) {
+    await this.create({
+      name: category.name,
+      description: category.description,
+    });
   }
-}
+};
 
-class Extention {
-  static async create({ name, description, category_id }) {
-    return db.query(
-      "insert into extentions (name, description, category_id) values ($1, $2, $3)",
-      [name, description, category_id]
-    );
+Extention.import = async function (extentions) {
+  for (let extention of extentions) {
+    await this.create({
+      name: extention.name,
+      description: extention.description,
+      category_id: extention.category,
+    });
   }
-
-  static async import(extentions) {
-    for (let extention of extentions) {
-      await this.create({
-        name: extention.name,
-        description: extention.description,
-        category_id: extention.category,
-      });
-    }
-  }
-
-  static async findByCate({ category_id }) {
-    return db.query("select * from extentions where category_id = $1", [
-      category_id,
-    ]);
-  }
-
-  static async findById(id) {
-    const result = await db.query("select * from extentions where _id = $1", [
-      id,
-    ]);
-    return result.rows[0];
-  }
-}
-
-class File {
-  static async create({ name, extention_id, owner_id }) {
-    return db.query(
-      "insert into files (name, extention_id, owner_id) values ($1,$2,$3)",
-      [name, extention_id, owner_id]
-    );
-  }
-
-  static async find({ owner_id }) {
-    return db.query("select * from files where owner_id = $1", [owner_id]);
-  }
-}
+};
 
 module.exports.Category = Category;
 module.exports.Extention = Extention;

@@ -15,6 +15,7 @@ const User = sequelize.define("user", {
   name: { type: DataTypes.STRING, allowNull: true },
   email: { type: DataTypes.STRING, unique: true, allowNull: false },
   password: { type: DataTypes.STRING, allowNull: false },
+  verify: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
 });
 
 User.regist = async function (email, password, repassword) {

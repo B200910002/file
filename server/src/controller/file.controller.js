@@ -1,6 +1,5 @@
 // const { File, Category, Extention } = require("../model/File.model");
 const { Category, Extention, File } = require("../model2/File.model");
-const { User } = require("../model/User.model");
 
 exports.createFile = async (req, res, next) => {
   try {
@@ -20,8 +19,8 @@ exports.createFile = async (req, res, next) => {
 exports.uploadFile = async (req, res, next) => {
   try {
     var { category, extention } = req.body;
-    category = await Category.findById(category);
-    extention = await Extention.findById(extention);
+    category = await Category.findByPk(category);
+    extention = await Extention.findByPk(extention);
 
     let sampleFile;
     let uploadPath;
@@ -58,8 +57,8 @@ exports.uploadFile = async (req, res, next) => {
 
 exports.getAllCategories = async (req, res, next) => {
   try {
-    const categories = await Category.find();
-    res.status(200).json(categories.rows);
+    const categories = await Category.findAll();
+    res.status(200).json(categories);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
@@ -68,8 +67,10 @@ exports.getAllCategories = async (req, res, next) => {
 exports.getAllExtentions = async (req, res, next) => {
   try {
     const { category } = req.body;
-    const extentions = await Extention.findByCate({ category_id: category });
-    res.status(200).json(extentions.rows);
+    const extentions = await Extention.findAll({
+      where: { category_id: category },
+    });
+    res.status(200).json(extentions);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
@@ -78,8 +79,8 @@ exports.getAllExtentions = async (req, res, next) => {
 exports.getAllFiles = async (req, res, next) => {
   try {
     const user = req.user;
-    const files = await File.find({ owner_id: user._id });
-    res.status(200).json(files.rows);
+    const files = await File.findAll({ where: { owner_id: user._id } });
+    res.status(200).json(files);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
