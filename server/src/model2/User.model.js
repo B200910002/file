@@ -5,6 +5,17 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 
+const UserGroup = sequelize.define("usergroup", {
+  _id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
+  },
+  role: { type: DataTypes.STRING, unique: true, allowNull: false },
+  desciption: { type: DataTypes.STRING, allowNull: false },
+});
+
 const User = sequelize.define("user", {
   _id: {
     type: DataTypes.INTEGER,
@@ -15,7 +26,12 @@ const User = sequelize.define("user", {
   name: { type: DataTypes.STRING, allowNull: true },
   email: { type: DataTypes.STRING, unique: true, allowNull: false },
   password: { type: DataTypes.STRING, allowNull: false },
-  verify: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+  verified: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+  role_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: "usergroups", key: "_id" },
+  },
 });
 
 User.regist = async function (email, password, repassword) {
@@ -35,9 +51,15 @@ User.regist = async function (email, password, repassword) {
     throw Error("Password not strong enough");
   }
 
+  const userGroup = await UserGroup.findOne({ role: "User" });
+
   const newPassword = await bcrypt.hash(password, 10);
 
-  const user = await this.create({ email: email, password: newPassword });
+  const user = await this.create({
+    email: email,
+    password: newPassword,
+    role_id: userGroup._id,
+  });
 
   return user;
 };
@@ -111,3 +133,4 @@ User.changePassword = async function (
 };
 
 module.exports.User = User;
+module.exports.UserGroup = UserGroup;

@@ -1,6 +1,6 @@
 const { Token } = require("../model/token.model");
 // const { User } = require("../model/User.model");
-const { User } = require("../model2/User.model");
+const { User, UserGroup } = require("../model2/User.model");
 
 exports.register = async (req, res, next) => {
   try {
@@ -61,7 +61,28 @@ exports.changePassword = async (req, res, next) => {
 exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.findAll();
-    res.status(200).json(users);
+    const result = {};
+    for (let user of users) {
+      const group = await UserGroup.findByPk(user.role_id);
+      if (group.role === "User") {
+        result.users = [];
+        result.users.push({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: group.role,
+        });
+      } else if (group.role === "Admin") {
+        result.admins = [];
+        result.admins.push({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          role: group.role,
+        });
+      }
+    }
+    res.status(200).json(result);
   } catch (e) {
     res.status(400).json({ error: e.message });
   }

@@ -30,8 +30,8 @@ exports.uploadFile = async (req, res, next) => {
     }
 
     sampleFile = req.files.file;
-    splitExtention = sampleFile.name.split(".")[1];
-    if (extention.name !== splitExtention)
+    splitExtention = sampleFile.name.split(".");
+    if (extention.name !== splitExtention[splitExtention.length - 1])
       throw new Error("File extention must be " + extention.name);
     if (sampleFile.size / 1024 / 1024 >= 5)
       throw new Error("File max size 5mb");
