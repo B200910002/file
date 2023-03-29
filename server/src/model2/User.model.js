@@ -32,6 +32,11 @@ const User = sequelize.define("user", {
     allowNull: false,
     references: { model: "usergroups", key: "_id" },
   },
+  profile_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: { model: "files", key: "_id" },
+  },
 });
 
 User.regist = async function (email, password, repassword) {

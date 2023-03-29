@@ -3,6 +3,7 @@ const router = express.Router();
 const userCtrl = require("../controller/user.controller");
 
 //get
+router.get("/", userCtrl.protect, userCtrl.getUser);
 router.get("/is-authencated", userCtrl.protect, userCtrl.isAuthencated);
 router.get("/get-all", userCtrl.getAllUsers);
 
