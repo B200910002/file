@@ -125,7 +125,6 @@ exports.editUser = async (req, res, next) => {
     user.name = name;
     user.profile_id = profile_id;
     await user.save();
-    console.log(user);
     res.status(200).json("user edited");
   } catch (e) {
     res.status(400).json({ error: e.message });
