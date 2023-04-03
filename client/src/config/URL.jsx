@@ -5,8 +5,8 @@ export const VIDEO_URL = `http://localhost:2000/public/video`;
 export const IS_AUTHENCATED_URL = `${BASE_URL}/user/is-authencated`;
 export const LOGIN_URL = `${BASE_URL}/user/login`;
 export const REGISTER_URL = `${BASE_URL}/user/register`;
-export const USER_URL = `${BASE_URL}/user/get-user`;
-export const EDIT_USER_URL = `${BASE_URL}/user/edit-user`;
+export const USER_URL = `${BASE_URL}/user/`;
+export const EDIT_USER_URL = `${BASE_URL}/user/edit`;
 export const CHANGE_PASSWORD_URL = `${BASE_URL}/user/change-password`;
 
 export const CONFiG = {

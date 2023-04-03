@@ -12,7 +12,7 @@ router.post("/register", userCtrl.register);
 router.post("/login", userCtrl.login);
 
 //put
-router.put("/edit-user", userCtrl.protect, userCtrl.editUser);
+router.put("/edit", userCtrl.protect, userCtrl.editUser);
 
 //patch
 router.patch("/change-password", userCtrl.protect, userCtrl.changePassword);
