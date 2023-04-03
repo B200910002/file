@@ -108,6 +108,7 @@ exports.getUser = async (req, res, next) => {
     const group = await UserGroup.findByPk(user.role_id);
     result.user = {
       name: user.name,
+      bio: user.bio,
       email: user.email,
       profile: pofile,
       role: group.role,
@@ -121,8 +122,9 @@ exports.getUser = async (req, res, next) => {
 exports.editUser = async (req, res, next) => {
   try {
     const user = req.user;
-    const { name, profile_id } = req.body;
+    const { name, bio, profile_id } = req.body;
     user.name = name;
+    user.bio = bio;
     user.profile_id = profile_id;
     await user.save();
     res.status(200).json("user edited");

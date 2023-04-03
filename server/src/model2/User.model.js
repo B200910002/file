@@ -24,6 +24,7 @@ const User = sequelize.define("user", {
     allowNull: false,
   },
   name: { type: DataTypes.STRING, allowNull: true },
+  bio: { type: DataTypes.TEXT, allowNull: true },
   email: { type: DataTypes.STRING, unique: true, allowNull: false },
   password: { type: DataTypes.STRING, allowNull: false },
   verified: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },

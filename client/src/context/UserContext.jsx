@@ -1,4 +1,4 @@
-import React, { Component, createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import {
   CHANGE_PASSWORD_URL,
@@ -11,9 +11,28 @@ export const UserContext = createContext({});
 
 export function UserProvider(props) {
   const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
   const [email, setEmail] = useState("");
   const [profile, setProfile] = useState("");
   const [role, setRole] = useState("");
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        await axios.get(USER_URL, CONFiG).then((response) => {
+          setName(response.data.user.name);
+          setBio(response.data.user.bio);
+          setEmail(response.data.user.email);
+          setProfile(response.data.user.profile);
+          setRole(response.data.user.role);
+        });
+      } catch (e) {
+        console.log(e.response.data.error);
+      }
+    }
+
+    getUser();
+  }, []);
 
   const changePassword = async (
     oldPassword,
@@ -37,29 +56,18 @@ export function UserProvider(props) {
     }
   };
 
-  const getUser = async () => {
-    try {
-      await axios.get(USER_URL, CONFiG).then((response) => {
-        setName(response.data.user.name);
-        setEmail(response.data.user.email);
-        setProfile(response.data.user.profile);
-        setRole(response.data.user.role);
-      });
-    } catch (e) {
-      console.log(e.response.data.error);
-    }
-  };
-
   const editProfile = async (user) => {
     try {
-      await axios.put(
+      const response = await axios.put(
         EDIT_USER_URL,
         {
           name: user.name,
+          bio: user.bio,
           profile_id: user.profile_id,
         },
         CONFiG
       );
+      return response.data;
     } catch (e) {
       console.log(e.response.data.error);
     }
@@ -69,8 +77,10 @@ export function UserProvider(props) {
     <UserContext.Provider
       value={{
         name,
+        bio,
         email,
-        getUser,
+        profile,
+        role,
         changePassword,
         editProfile,
       }}

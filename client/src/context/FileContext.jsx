@@ -12,11 +12,12 @@ export const FileContext = createContext({});
 
 export function FileProvider(props) {
   const [files, setFiles] = useState([]);
+  const [selectedItemId, setSelectedItemId] = useState(0);
   const [categories, setCategories] = useState([]);
   const [extentions, setExtentions] = useState([]);
 
   useEffect(() => {
-    async function getAllFiles(){
+    async function getAllFiles() {
       try {
         axios.get(FILES_URL, CONFiG).then((response) => {
           setFiles(response.data);
@@ -24,7 +25,7 @@ export function FileProvider(props) {
       } catch (e) {
         console.log(e.message);
       }
-    };
+    }
 
     getAllFiles();
   }, []);
@@ -51,15 +52,8 @@ export function FileProvider(props) {
     }
   };
 
-  const uploadFile = async (event) => {
+  const uploadFile = async (formFile) => {
     try {
-      const file = event.target.file.files[0];
-      const category = event.target.category.value;
-      const extention = event.target.extention.value;
-      var formFile = new FormData();
-      formFile.append("file", file);
-      formFile.append("category", category);
-      formFile.append("extention", extention);
       await axios.post(UPLOAD_FILE_URL, formFile, CONFiG);
       return "file uploaded";
     } catch (e) {
@@ -71,6 +65,8 @@ export function FileProvider(props) {
     <FileContext.Provider
       value={{
         files,
+        selectedItemId,
+        setSelectedItemId,
         categories,
         extentions,
         uploadFile,

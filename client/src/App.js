@@ -20,8 +20,9 @@ import Profile from "./page/Profile";
 
 import Header from "./component/Header";
 import Footer from "./component/Footer";
-import FileUpload from "./component/FileUpload";
 import Files from "./component/Files";
+import ViewProfile from "./component/profile/ViewProfile";
+import EditProfile from "./component/profile/EditProfile";
 
 function App() {
   return (
@@ -38,9 +39,9 @@ function App() {
               <Route index element={<Files />} />
               {/* <Route path="upload" element={<FileUpload />} /> */}
             </Route>
-            <Route path="/profile">
-              <Route index element={<Profile />} />
-              {/* <Route path="upload" element={<FileUpload />}/> */}
+            <Route path="/profile" element={<Profile />}>
+              <Route index element={<ViewProfile />} />
+              <Route path="edit" element={<EditProfile />} />
             </Route>
           </Route>
           {/* <Route path="/user/:id/verify/:token" element={<EmailVerify />}></Route> */}

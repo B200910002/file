@@ -3,8 +3,8 @@ import { FileContext } from "../context/FileContext";
 import { SuccessAlert, DangerAlert } from "../util/Alert";
 
 export default function FileUpload({ setOpenModal }) {
-  const [category, setCategory] = useState("");
-  const [extention, setExtention] = useState("");
+  const [category, setCategory] = useState({});
+  const [extention, setExtention] = useState({});
   const [response, setResponse] = useState("");
   const {
     categories,
@@ -16,7 +16,14 @@ export default function FileUpload({ setOpenModal }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await uploadFile(event);
+    const file = event.target.file.files[0];
+    // const category = event.target.category.value;
+    // const extention = event.target.extention.value;
+    var formFile = new FormData();
+    formFile.append("file", file);
+    formFile.append("category", category._id);
+    formFile.append("extention", extention._id);
+    const response = await uploadFile(formFile);
     setResponse(response);
   };
 
@@ -42,7 +49,7 @@ export default function FileUpload({ setOpenModal }) {
                 getAllExtentions(event.target.value);
                 setCategory(
                   categories.find(function (element) {
-                    return element._id+"" === event.target.value+"";
+                    return element._id + "" === event.target.value + "";
                   })
                 );
               }}
@@ -105,7 +112,7 @@ export default function FileUpload({ setOpenModal }) {
                 className="w-full mt-2 p-2.5 flex-1 hover:bg-blue-700 text-white bg-blue-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
                 type="submit"
               >
-                Save
+                Upload
               </button>
               <button
                 className="w-full mt-2 p-2.5 flex-1 hover:bg-blue-700 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"

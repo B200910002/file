@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { UserContext } from "../context/UserContext";
-import { SuccessAlert, DangerAlert } from "../util/Alert";
+import { UserContext } from "../../context/UserContext";
+import { SuccessAlert, DangerAlert } from "../../util/Alert";
 
 function ChangePassword({ setOpenModal }) {
   const [oldPassword, setOldpassword] = useState("");
