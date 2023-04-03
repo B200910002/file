@@ -123,9 +123,9 @@ exports.editUser = async (req, res, next) => {
   try {
     const user = req.user;
     const { name, bio, profile_id } = req.body;
-    user.name = name;
-    user.bio = bio;
-    user.profile_id = profile_id;
+    user.name = name ? name : user.name;
+    user.bio = bio ? bio : user.bio;
+    user.profile_id = profile_id != 0 ? profile_id : user.profile_id;
     await user.save();
     res.status(200).json("user edited");
   } catch (e) {

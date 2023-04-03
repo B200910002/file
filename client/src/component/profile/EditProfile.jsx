@@ -8,7 +8,7 @@ import { SuccessAlert, DangerAlert } from "../../util/Alert";
 function EditProfile() {
   const [uploadModalShow, setUploadShowModal] = useState(false);
   const [response, setResponse] = useState("");
-  const { editProfile } = useContext(UserContext);
+  const { name, bio, email, profile, editProfile } = useContext(UserContext);
   const { selectedItemId } = useContext(FileContext);
 
   const handleSubmit = async (event) => {
@@ -31,12 +31,14 @@ function EditProfile() {
           name="name"
           type="text"
           className="border border-gray-400 py-2 px-3 w-full rounded-lg"
+          defaultValue={name}
         />
         <label className="block text-gray-700 font-semibold mb-2">Bio:</label>
         <input
           name="bio"
           type="text"
           className="border border-gray-400 py-2 px-3 w-full rounded-lg"
+          defaultValue={bio}
         />
         <label className="text-gray-700 font-semibold mb-2">
           Choose profile:
