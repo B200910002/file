@@ -14,9 +14,9 @@ function FileConsumer() {
   return (
     <FileContext.Consumer>
       {(context) => (
-        <>
+        <div className="container mx-auto my-5 py-2 px-4 border border-gray-400 rounded-lg">
           <Outlet />
-        </>
+        </div>
       )}
     </FileContext.Consumer>
   );

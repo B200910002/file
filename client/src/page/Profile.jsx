@@ -14,7 +14,15 @@ function Profile() {
 }
 
 function ProfileConsumer() {
-  return <UserContext.Consumer>{(context) => <Outlet />}</UserContext.Consumer>;
+  return (
+    <UserContext.Consumer>
+      {(context) => (
+        <div className="container mx-auto my-5 py-2 px-4 border border-gray-400 rounded-lg">
+          <Outlet />
+        </div>
+      )}
+    </UserContext.Consumer>
+  );
 }
 
 export default Profile;

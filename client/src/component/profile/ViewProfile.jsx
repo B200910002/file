@@ -9,8 +9,8 @@ function ViewProfile() {
   const [changePassModalShow, setChangePassModalShow] = useState(false);
   const { name, bio, email, profile, role } = useContext(UserContext);
   return (
-    <div className="container mx-auto my-5 py-2 px-4 border border-gray-400 rounded-lg">
-      <h2 className="text-gray-700 font-bold mb-2">Profile</h2>
+    <>
+      <h2 className="text-2xl font-semibold mb-6">View profile</h2>
       <div className="flex flex-col items-center justify-center h-60">
         <img
           alt="profile"
@@ -51,7 +51,7 @@ function ViewProfile() {
 
         {editModalShow && <FileUpload setOpenModal={setEditModalShow} />}
       </div>
-    </div>
+    </>
   );
 }
 

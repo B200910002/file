@@ -33,8 +33,8 @@ function Files() {
   };
 
   return (
-    <div className="container mx-auto my-5 py-2 px-4 border border-gray-400 rounded-lg">
-      <h2 className="text-gray-700 font-bold mb-2">Your files</h2>
+    <>
+      <h2 className="text-2xl font-semibold mb-6">Your files</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {files.map((file) => (
           <GridItem
@@ -45,7 +45,7 @@ function Files() {
           />
         ))}
       </div>
-    </div>
+    </>
   );
 }
 

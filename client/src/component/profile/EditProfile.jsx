@@ -5,6 +5,7 @@ import Files from "../Files";
 import FileUpload from "../FileUpload";
 import { SuccessAlert, DangerAlert } from "../../util/Alert";
 import Cropper from "react-easy-crop";
+import ReactCrop from "react-image-crop";
 
 function ImageCropper({ image, onCropDone, onCropCancel }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -21,7 +22,7 @@ function ImageCropper({ image, onCropDone, onCropCancel }) {
   };
 
   return (
-    <div >
+    <div>
       <div>
         <Cropper
           image={image}
@@ -53,7 +54,10 @@ function ImageCropper({ image, onCropDone, onCropCancel }) {
           <input type="radio" value={3 / 1} name="ratio" /> 3:1
         </div>
 
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={onCropCancel}>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={onCropCancel}
+        >
           Cancel
         </button>
 
@@ -112,7 +116,7 @@ function EditProfile() {
         imgCroppedArea.height
       );
 
-      const dataURL = canvasEle.toDataURL("image/jpeg");
+      const dataURL = canvasEle.toDataURL("image/png");
 
       setImgAfterCrop(dataURL);
       setCurrentPage("img-cropped");
@@ -125,7 +129,7 @@ function EditProfile() {
   };
 
   return (
-    <div className="container mx-auto my-5 py-2 px-4 border border-gray-400 rounded-lg">
+    <>
       <form onSubmit={handleSubmit}>
         <h2 className="text-2xl font-semibold mb-6">Edit profile</h2>
         <label className="block text-gray-700 font-semibold mb-2">Name:</label>
@@ -163,13 +167,16 @@ function EditProfile() {
             onCropCancel={onCropCancel}
           />
         </div>
-        <p
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => setUploadShowModal(true)}
-        >
-          Upload new one
-        </p>
-        <Files name="files" />
+        <div className="container mx-auto my-5 py-2 px-4 border border-gray-400 rounded-lg">
+          <Files name="files" />
+          <p
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => setUploadShowModal(true)}
+          >
+            Upload new one
+          </p>
+        </div>
+
         <input type="hidden" name="file_id" value={selectedItemId} />
         <button
           name="submit"
@@ -192,7 +199,7 @@ function EditProfile() {
           <></>
         )}
       </div>
-    </div>
+    </>
   );
 }
 
