@@ -5,7 +5,7 @@ import Files from "../Files";
 import FileUpload from "../FileUpload";
 import { SuccessAlert, DangerAlert } from "../../util/Alert";
 import Cropper from "react-easy-crop";
-import ReactCrop from "react-image-crop";
+import { NavLink, Navigate } from "react-router-dom";
 
 function ImageCropper({ image, onCropDone, onCropCancel }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -116,7 +116,7 @@ function EditProfile() {
         imgCroppedArea.height
       );
 
-      const dataURL = canvasEle.toDataURL("image/png");
+      const dataURL = canvasEle.toDataURL("image/jpeg");
 
       setImgAfterCrop(dataURL);
       setCurrentPage("img-cropped");
@@ -167,24 +167,29 @@ function EditProfile() {
             onCropCancel={onCropCancel}
           />
         </div>
-        <div className="container mx-auto my-5 py-2 px-4 border border-gray-400 rounded-lg">
-          <Files name="files" />
-          <p
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => setUploadShowModal(true)}
-          >
-            Upload new one
-          </p>
-        </div>
-
-        <input type="hidden" name="file_id" value={selectedItemId} />
-        <button
-          name="submit"
-          type="submit"
+        <p
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => setUploadShowModal(true)}
         >
-          Save
-        </button>
+          Upload new one
+        </p>
+        <Files name="files" />
+        <input type="hidden" name="file_id" value={selectedItemId} />
+        <div className="items-center gap-2 mt-3 sm:flex">
+          <button
+            name="submit"
+            type="submit"
+            className="w-full mt-2 p-2.5 flex-1 hover:bg-blue-700 text-white bg-blue-600 rounded-md outline-none ring-offset-2 ring-indigo-600 focus:ring-2"
+          >
+            Save
+          </button>
+          <NavLink
+            to="/profile"
+            className="w-full mt-2 p-2.5 flex-1 hover:bg-blue-700 text-gray-800 rounded-md outline-none border ring-offset-2 ring-red-600 focus:ring-2 text-center"
+          >
+            Cancel
+          </NavLink>
+        </div>
       </form>
       {uploadModalShow && <FileUpload setOpenModal={setUploadShowModal} />}
       <div>

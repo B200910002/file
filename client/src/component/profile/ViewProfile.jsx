@@ -11,30 +11,20 @@ function ViewProfile() {
   return (
     <>
       <h2 className="text-2xl font-semibold mb-6">View profile</h2>
-      <div className="flex flex-col items-center justify-center h-60">
-        <img
-          alt="profile"
-          src={profile}
-          style={{ width: "100px", height: "100px", borderRadius: "100px" }}
-        />
-        <p>name: {name}</p>
-        <p>bio: {bio}</p>
-        <p>email: {email}</p>
-        <p>role: {role}</p>
-
+      <div>
+        <img alt="profile" src={profile} style={{height: "100px"}}/>
+        <p className="text-gray-700 font-semibold">Name: {name}</p>
+        <p className="text-gray-700 font-semibold">Bio: {bio}</p>
+        <p className="text-gray-700 font-semibold">Email: {email}</p>
+        <p className="text-gray-700 font-semibold">Role: {role}</p>
         <NavLink to="edit">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             type="button"
-            onClick={() => {
-              // setEditModalShow(true);
-            }}
           >
             Edit profile
           </button>
-        </NavLink>
-
-        <br />
+        </NavLink>{" "}
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           type="button"
@@ -44,11 +34,9 @@ function ViewProfile() {
         >
           Change Password
         </button>
-
         {changePassModalShow && (
           <ChangePassword setOpenModal={setChangePassModalShow} />
         )}
-
         {editModalShow && <FileUpload setOpenModal={setEditModalShow} />}
       </div>
     </>
