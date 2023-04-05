@@ -94,26 +94,29 @@ exports.getUser = async (req, res, next) => {
   try {
     const user = req.user;
     const result = {};
-    const file = await File.findByPk(user.profile_id);
-    const extention = await Extention.findByPk(file.extention_id);
-    const category = await Category.findByPk(extention.category_id);
-    const pofile =
-      process.env.LOCAL_HOST_PORT +
-      "public/file/" +
-      category.name +
-      "/" +
-      extention.name +
-      "/" +
-      file.name;
-    const group = await UserGroup.findByPk(user.role_id);
     result.user = {
       name: user.name,
       bio: user.bio,
       email: user.email,
-      profile: pofile,
-      role: group.role,
     };
-    res.status(200).json(result);
+    const file = await File.findByPk(user.profile_id);
+    if (!file) res.status(200).json(result);
+    else {
+      const extention = await Extention.findByPk(file.extention_id);
+      const category = await Category.findByPk(extention.category_id);
+      const profile =
+        process.env.LOCAL_HOST_PORT +
+        "public/file/" +
+        category.name +
+        "/" +
+        extention.name +
+        "/" +
+        file.name;
+      result.user.profile = profile;
+      const group = await UserGroup.findByPk(user.role_id);
+      result.user.role = group.role;
+      res.status(200).json(result);
+    }
   } catch (e) {
     res.status(400).json({ error: e.message });
   }
