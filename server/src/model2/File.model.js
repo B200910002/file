@@ -48,6 +48,7 @@ const File = sequelize.define("files", {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: { model: "users", key: "_id" },
+    onDelete: "CASCADE",
   },
 });
 

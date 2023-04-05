@@ -6,6 +6,7 @@ const userCtrl = require("../controller/user.controller");
 router.get("/", userCtrl.protect, userCtrl.getUser);
 router.get("/is-authencated", userCtrl.protect, userCtrl.isAuthencated);
 router.get("/get-all", userCtrl.getAllUsers);
+router.get("/:_id/followers", userCtrl.getFollowers);
 
 //post
 router.post("/register", userCtrl.register);

@@ -1,5 +1,5 @@
 const { sequelize } = require("../database/postgresql");
-const { DataTypes } = require("sequelize");
+const { DataTypes, and } = require("sequelize");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -37,8 +37,31 @@ const User = sequelize.define("user", {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: { model: "files", key: "_id" },
+    onDelete: "CASCADE",
   },
 });
+
+const UserRelation = sequelize.define("relation", {
+  follower_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: "users", key: "_id" },
+    primaryKey: true,
+    onDelete: "CASCADE",
+  },
+  following_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: "users", key: "_id" },
+    primaryKey: true,
+    onDelete: "CASCADE",
+  },
+});
+
+User.associate = function (models) {
+  User.hasMany(UserRelation, { foreignKey: "follower_id" });
+};
+
 
 User.regist = async function (email, password, repassword) {
   if (!email || !password) {
@@ -47,7 +70,7 @@ User.regist = async function (email, password, repassword) {
   if (!validator.isEmail(email)) {
     throw Error("Email is not valid");
   }
-  if (await this.findOne({ email })) {
+  if (await this.findOne({ where: { email: email } })) {
     throw Error("Email already in register");
   }
   if (password !== repassword) {
@@ -57,7 +80,7 @@ User.regist = async function (email, password, repassword) {
     throw Error("Password not strong enough");
   }
 
-  const userGroup = await UserGroup.findOne({ role: "User" });
+  const userGroup = await UserGroup.findOne({ where: { role: "User" } });
 
   const newPassword = await bcrypt.hash(password, 10);
 
@@ -77,7 +100,7 @@ User.login = async function (email, password) {
   if (!validator.isEmail(email)) {
     throw Error("Email is not valid");
   }
-  const user = await this.findOne({ email: email });
+  const user = await this.findOne({ where: { email: email } });
   if (!user) {
     throw Error("Invalid email");
   }
@@ -136,6 +159,31 @@ User.changePassword = async function (
     await user.save();
   }
   return "Password changed";
+};
+
+User.getFollowers = async function (user) {
+  return await User.findAll({
+    include: [{ model: UserRelation, where: { following_id: user._id } }],
+  });
+};
+
+User.getFollowings = async function (user) {
+  return await User.findAll({
+    include: [{ model: UserRelation, where: { follower_id: user._id } }],
+  });
+};
+
+User.follow = async function (user1, user2) {
+  await UserRelation.create({
+    follower_id: user1._id,
+    following_id: user2._id,
+  });
+};
+
+User.unfollow = async function (user1, user2) {
+  await UserRelation.destroy({
+    where: { follower_id: user1._id, following_id: user2._id },
+  });
 };
 
 module.exports.User = User;

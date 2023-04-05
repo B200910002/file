@@ -132,3 +132,14 @@ exports.editUser = async (req, res, next) => {
     res.status(400).json({ error: e.message });
   }
 };
+
+exports.getFollowers = async (req, res, next) => {
+  try {
+    const { _id } = req.params;
+    const user = await User.findByPk(_id);
+    const followers = await User.getFollowers(user);
+    res.status(200).json(followers);
+  } catch (e) {
+    res.status(400).json({ error: e.message });
+  }
+};
